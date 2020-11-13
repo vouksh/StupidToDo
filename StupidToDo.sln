@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StupidToDo", "StupidToDo.csproj", "{075AE021-38E8-4E01-8D6B-D1B94A717668}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{075AE021-38E8-4E01-8D6B-D1B94A717668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075AE021-38E8-4E01-8D6B-D1B94A717668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075AE021-38E8-4E01-8D6B-D1B94A717668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075AE021-38E8-4E01-8D6B-D1B94A717668}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B27292AC-FEE5-4DBC-B441-8CD021F62646}
+	EndGlobalSection
+EndGlobal
