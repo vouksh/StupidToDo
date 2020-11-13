@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace StupidToDo
 {
@@ -34,9 +35,10 @@ namespace StupidToDo
 			{
 				foreach (var control in Controls)
 				{
-					if (control is not Label and not Button)
+					if (control is not Label and not Button and Control c)
 					{
-						(control as Control).Enabled = false;
+						c.Enabled = false;
+						//(control as Control).Enabled = false;
 					}
 				}
 				editEnabled.Enabled = true;
