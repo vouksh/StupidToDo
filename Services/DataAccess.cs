@@ -117,9 +117,10 @@ namespace StupidToDo.Services
 		{
 			List<ToDo> retList = new List<ToDo>();
 			var start = await dbContext.Items.Where(t => t.DoReminder && !t.Completed).ToListAsync();
-			foreach(var item in start.Where(t => t.RemindDate.HasValue && t.RemindDate.Value <= DateTime.Today))
+			foreach(var item in start.Where(t => t.RemindDate.HasValue && DateTime.Today >= t.RemindDate.Value))
 			{
-				retList.Add(item);
+				if(DateTime.Now.TimeOfDay >= item.RemindTime.Value.TimeOfDay)
+					retList.Add(item);
 			}
 			foreach(var item in start.Where(t => t.Repeats))
 			{
@@ -128,19 +129,31 @@ namespace StupidToDo.Services
 					switch (item.Frequency)
 					{
 						case RepeatFrequency.Daily:
-							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(1))
+							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Weekly:
-							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(7))
+							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value * 7))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Hourly:
-							if ((DateTime.Now - item.Created) >= TimeSpan.FromHours(1))
+							if ((DateTime.Now - item.Created) >= TimeSpan.FromHours(item.RepeatEvery.Value))
+							{
+								retList.Add(item);
+							}
+							break;
+						case RepeatFrequency.Minutely:
+							if ((DateTime.Now - item.Created) >= TimeSpan.FromMinutes(item.RepeatEvery.Value))
+							{
+								retList.Add(item);
+							}
+							break;
+						case RepeatFrequency.DayOfWeek:
+							if(item.Created.DayOfWeek == DateTime.Now.DayOfWeek)
 							{
 								retList.Add(item);
 							}
@@ -152,19 +165,31 @@ namespace StupidToDo.Services
 					switch (item.Frequency)
 					{
 						case RepeatFrequency.Daily:
-							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(1))
+							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Weekly:
-							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(7))
+							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value * 7))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Hourly:
-							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromHours(1))
+							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromHours(item.RepeatEvery.Value))
+							{
+								retList.Add(item);
+							}
+							break;
+						case RepeatFrequency.Minutely:
+							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromMinutes(item.RepeatEvery.Value))
+							{
+								retList.Add(item);
+							}
+							break;
+						case RepeatFrequency.DayOfWeek:
+							if (item.LastRepeat.Value.DayOfWeek == DateTime.Now.DayOfWeek)
 							{
 								retList.Add(item);
 							}

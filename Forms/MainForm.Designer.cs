@@ -298,6 +298,7 @@ namespace StupidToDo
 			// 
 			// reminderTimer
 			// 
+			this.reminderTimer.Interval = 1000;
 			this.reminderTimer.Tick += new System.EventHandler(this.ReminderTimer_Tick);
 			// 
 			// FlowPanel

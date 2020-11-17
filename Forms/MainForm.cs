@@ -24,10 +24,44 @@ namespace StupidToDo
 		{
 			FlowPanel.Controls.Add(new ToDoControl(ref dataAccess));
 		}
-
-		private void ReminderTimer_Tick(object sender, EventArgs e)
+		private bool remindersShown = false;
+		private async void ReminderTimer_Tick(object sender, EventArgs e)
 		{
+			if (!remindersShown)
+			{
+				List<Records.ToDo> dueTasks = await dataAccess.ItemsDueNow();
+				if (dueTasks.Count > 0)
+				{
+					remindersShown = true;
+					foreach (var task in dueTasks)
+					{
+						var dialog = new Forms.ReminderDialog(ref dataAccess, task);
+						while (dialog.ShowDialog() != DialogResult.OK) { }
+						if (!task.Repeats)
+						{
+							var ctrl = FlowPanel.Controls.Cast<ToDoControl>().FirstOrDefault(f => f.assignedToDo.ID == task.ID);
+							if (ctrl is not null)
+							{
+								RemoveToDo(ctrl.ControlGUID);
+							}
+						}
+					}
+				}
+				remindersShown = false;
+			}
+		}
 
+		private async void ResetChildren()
+		{
+			if(FlowPanel.Controls.Count > 0)
+			{
+				FlowPanel.Controls.Clear();
+			}
+			foreach (var item in await dataAccess.GetCurrentListItems())
+			{
+				if (!item.Completed)
+					FlowPanel.Controls.Add(new ToDoControl(item, ref dataAccess));
+			}
 		}
 
 		private async void MainForm_Load(object sender, EventArgs e)
@@ -37,10 +71,8 @@ namespace StupidToDo
 				listMenuCollection.DropDownItems.Add(list.Name);
 			}
 			listMenuCollection.DropDownItemClicked += ListMenuCollection_DropDownItemClicked;
-			foreach(var item in await dataAccess.GetCurrentListItems())
-			{
-				FlowPanel.Controls.Add(new ToDoControl(item, ref dataAccess));
-			}
+			ResetChildren();
+			reminderTimer.Start();
 		}
 
 		private void ListMenuCollection_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -54,6 +86,7 @@ namespace StupidToDo
 			{
 				if(toDo.ControlGUID == controlGUID)
 				{
+					dataAccess.RemoveToDo(toDo.assignedToDo.ID);
 					FlowPanel.Controls.Remove(toDo);
 					return;
 				}

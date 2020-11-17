@@ -31,6 +31,7 @@ namespace StupidToDo.Records
 		Weekly,
 		Daily,
 		Hourly,
+		Minutely,
 		Never
 	}
 	public enum DayOfWeek

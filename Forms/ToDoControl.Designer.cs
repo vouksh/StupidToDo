@@ -33,7 +33,6 @@ namespace StupidToDo
 			this.label1 = new System.Windows.Forms.Label();
 			this.titleBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.BodyBox = new System.Windows.Forms.TextBox();
 			this.remindDate = new System.Windows.Forms.DateTimePicker();
 			this.reminderBox = new System.Windows.Forms.CheckBox();
 			this.CompleteButton = new System.Windows.Forms.Button();
@@ -42,8 +41,9 @@ namespace StupidToDo
 			this.RepeatsOnBox = new System.Windows.Forms.ComboBox();
 			this.DayOfWeekBox = new System.Windows.Forms.ComboBox();
 			this.EveryBox = new System.Windows.Forms.NumericUpDown();
-			this.label3 = new System.Windows.Forms.Label();
+			this.everyLabel = new System.Windows.Forms.Label();
 			this.deleteBtn = new System.Windows.Forms.Button();
+			this.BodyBox = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.EveryBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -84,16 +84,6 @@ namespace StupidToDo
 			this.label2.TabIndex = 3;
 			this.label2.Text = "Body";
 			// 
-			// BodyBox
-			// 
-			this.BodyBox.AcceptsReturn = true;
-			this.BodyBox.Location = new System.Drawing.Point(48, 45);
-			this.BodyBox.Multiline = true;
-			this.BodyBox.Name = "BodyBox";
-			this.BodyBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.BodyBox.Size = new System.Drawing.Size(276, 98);
-			this.BodyBox.TabIndex = 4;
-			// 
 			// remindDate
 			// 
 			this.remindDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -111,6 +101,7 @@ namespace StupidToDo
 			this.reminderBox.TabIndex = 6;
 			this.reminderBox.Text = "Remind Me";
 			this.reminderBox.UseVisualStyleBackColor = true;
+			this.reminderBox.CheckedChanged += new System.EventHandler(this.ReminderBox_CheckedChanged);
 			// 
 			// CompleteButton
 			// 
@@ -138,6 +129,7 @@ namespace StupidToDo
 			this.RepeatBox.TabIndex = 9;
 			this.RepeatBox.Text = "Repeats";
 			this.RepeatBox.UseVisualStyleBackColor = true;
+			this.RepeatBox.CheckedChanged += new System.EventHandler(this.RepeatBox_CheckedChanged);
 			// 
 			// RepeatsOnBox
 			// 
@@ -147,7 +139,8 @@ namespace StupidToDo
             "Day Of Week",
             "Weeks",
             "Days",
-            "Hours"});
+            "Hours",
+            "Minutes"});
 			this.RepeatsOnBox.Location = new System.Drawing.Point(106, 210);
 			this.RepeatsOnBox.Name = "RepeatsOnBox";
 			this.RepeatsOnBox.Size = new System.Drawing.Size(107, 23);
@@ -178,14 +171,14 @@ namespace StupidToDo
 			this.EveryBox.Size = new System.Drawing.Size(38, 23);
 			this.EveryBox.TabIndex = 12;
 			// 
-			// label3
+			// everyLabel
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(11, 214);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(35, 15);
-			this.label3.TabIndex = 13;
-			this.label3.Text = "Every";
+			this.everyLabel.AutoSize = true;
+			this.everyLabel.Location = new System.Drawing.Point(11, 214);
+			this.everyLabel.Name = "everyLabel";
+			this.everyLabel.Size = new System.Drawing.Size(35, 15);
+			this.everyLabel.TabIndex = 13;
+			this.everyLabel.Text = "Every";
 			// 
 			// deleteBtn
 			// 
@@ -197,13 +190,22 @@ namespace StupidToDo
 			this.deleteBtn.UseVisualStyleBackColor = true;
 			this.deleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
 			// 
+			// BodyBox
+			// 
+			this.BodyBox.Location = new System.Drawing.Point(48, 45);
+			this.BodyBox.Name = "BodyBox";
+			this.BodyBox.Size = new System.Drawing.Size(275, 96);
+			this.BodyBox.TabIndex = 15;
+			this.BodyBox.Text = "";
+			// 
 			// ToDoControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.Controls.Add(this.BodyBox);
 			this.Controls.Add(this.deleteBtn);
-			this.Controls.Add(this.label3);
+			this.Controls.Add(this.everyLabel);
 			this.Controls.Add(this.EveryBox);
 			this.Controls.Add(this.DayOfWeekBox);
 			this.Controls.Add(this.RepeatsOnBox);
@@ -212,7 +214,6 @@ namespace StupidToDo
 			this.Controls.Add(this.CompleteButton);
 			this.Controls.Add(this.reminderBox);
 			this.Controls.Add(this.remindDate);
-			this.Controls.Add(this.BodyBox);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.titleBox);
 			this.Controls.Add(this.label1);
@@ -231,7 +232,6 @@ namespace StupidToDo
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox titleBox;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox BodyBox;
 		private System.Windows.Forms.DateTimePicker remindDate;
 		private System.Windows.Forms.CheckBox reminderBox;
 		private System.Windows.Forms.Button CompleteButton;
@@ -240,7 +240,8 @@ namespace StupidToDo
 		private System.Windows.Forms.ComboBox RepeatsOnBox;
 		private System.Windows.Forms.ComboBox DayOfWeekBox;
 		private System.Windows.Forms.NumericUpDown EveryBox;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label everyLabel;
 		private System.Windows.Forms.Button deleteBtn;
+		private System.Windows.Forms.RichTextBox BodyBox;
 	}
 }
