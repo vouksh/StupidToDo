@@ -43,6 +43,7 @@ namespace StupidToDo
 			this.DayOfWeekBox = new System.Windows.Forms.ComboBox();
 			this.EveryBox = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
+			this.deleteBtn = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.EveryBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -186,11 +187,22 @@ namespace StupidToDo
 			this.label3.TabIndex = 13;
 			this.label3.Text = "Every";
 			// 
+			// deleteBtn
+			// 
+			this.deleteBtn.Location = new System.Drawing.Point(274, 254);
+			this.deleteBtn.Name = "deleteBtn";
+			this.deleteBtn.Size = new System.Drawing.Size(49, 23);
+			this.deleteBtn.TabIndex = 14;
+			this.deleteBtn.Text = "Delete";
+			this.deleteBtn.UseVisualStyleBackColor = true;
+			this.deleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
+			// 
 			// ToDoControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.Controls.Add(this.deleteBtn);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.EveryBox);
 			this.Controls.Add(this.DayOfWeekBox);
@@ -229,5 +241,6 @@ namespace StupidToDo
 		private System.Windows.Forms.ComboBox DayOfWeekBox;
 		private System.Windows.Forms.NumericUpDown EveryBox;
 		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Button deleteBtn;
 	}
 }

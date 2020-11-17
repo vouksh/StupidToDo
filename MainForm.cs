@@ -22,8 +22,7 @@ namespace StupidToDo
 
 		private void NewItemMenuItem_Click(object sender, EventArgs e)
 		{
-			FlowPanel.Controls.Add(new Splitter());
-			FlowPanel.Controls.Add(new ToDoControl());
+			FlowPanel.Controls.Add(new ToDoControl(ref dataAccess));
 		}
 
 		private void ReminderTimer_Tick(object sender, EventArgs e)
@@ -40,13 +39,25 @@ namespace StupidToDo
 			listMenuCollection.DropDownItemClicked += ListMenuCollection_DropDownItemClicked;
 			foreach(var item in await dataAccess.GetCurrentListItems())
 			{
-				FlowPanel.Controls.Add(new ToDoControl(item));
+				FlowPanel.Controls.Add(new ToDoControl(item, ref dataAccess));
 			}
 		}
 
 		private void ListMenuCollection_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
 			dataAccess.SwitchList(e.ClickedItem.Text);
+		}
+
+		public void RemoveToDo(Guid controlGUID)
+		{
+			foreach(ToDoControl toDo in FlowPanel.Controls)
+			{
+				if(toDo.ControlGUID == controlGUID)
+				{
+					FlowPanel.Controls.Remove(toDo);
+					return;
+				}
+			}
 		}
 	}
 }

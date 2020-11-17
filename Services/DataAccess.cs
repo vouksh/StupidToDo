@@ -47,6 +47,24 @@ namespace StupidToDo.Services
 			await dbContext.SaveChangesAsync();
 		}
 
+		public async Task<ToDo> AddNewToDo()
+		{
+			ToDo newToDo = new ToDo
+			{
+				AssignedListID = Config.SelectedListID,
+				Created = DateTime.Now
+			};
+			dbContext.Items.Add(newToDo);
+			await dbContext.SaveChangesAsync();
+			return newToDo;
+		}
+
+		public async void UpdateToDo(ToDo toDo)
+		{
+			dbContext.Items.Update(toDo);
+			await dbContext.SaveChangesAsync();
+		}
+
 		public async void RemoveToDo(int toDoID)
 		{
 			dbContext.Items.Remove(dbContext.Items.First(t => t.ID == toDoID));

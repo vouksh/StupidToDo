@@ -308,7 +308,7 @@ namespace StupidToDo
 			this.FlowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FlowPanel.Location = new System.Drawing.Point(0, 24);
 			this.FlowPanel.Name = "FlowPanel";
-			this.FlowPanel.Size = new System.Drawing.Size(337, 287);
+			this.FlowPanel.Size = new System.Drawing.Size(337, 537);
 			this.FlowPanel.TabIndex = 1;
 			// 
 			// MainForm
@@ -317,13 +317,13 @@ namespace StupidToDo
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ClientSize = new System.Drawing.Size(337, 311);
+			this.ClientSize = new System.Drawing.Size(337, 561);
 			this.Controls.Add(this.FlowPanel);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(371, 600);
-			this.MinimumSize = new System.Drawing.Size(353, 350);
+			this.MaximumSize = new System.Drawing.Size(378, 600);
+			this.MinimumSize = new System.Drawing.Size(353, 600);
 			this.Name = "MainForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Stupid ToDo";
