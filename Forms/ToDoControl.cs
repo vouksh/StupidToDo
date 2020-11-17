@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace StupidToDo
+namespace StupidToDo.Forms
 {
 	public partial class ToDoControl : UserControl
 	{

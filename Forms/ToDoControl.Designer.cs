@@ -1,5 +1,5 @@
 ﻿
-namespace StupidToDo
+namespace StupidToDo.Forms
 {
 	partial class ToDoControl
 	{

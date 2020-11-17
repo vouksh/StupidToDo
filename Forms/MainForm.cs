@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace StupidToDo
+namespace StupidToDo.Forms
 {
 	public partial class MainForm : Form
 	{
@@ -53,7 +49,7 @@ namespace StupidToDo
 
 		private async void ResetChildren()
 		{
-			if(FlowPanel.Controls.Count > 0)
+			if (FlowPanel.Controls.Count > 0)
 			{
 				FlowPanel.Controls.Clear();
 			}
@@ -66,7 +62,7 @@ namespace StupidToDo
 
 		private async void MainForm_Load(object sender, EventArgs e)
 		{
-			foreach(var list in await dataAccess.GetLists())
+			foreach (var list in await dataAccess.GetLists())
 			{
 				listMenuCollection.DropDownItems.Add(list.Name);
 			}
@@ -82,9 +78,9 @@ namespace StupidToDo
 
 		public void RemoveToDo(Guid controlGUID)
 		{
-			foreach(ToDoControl toDo in FlowPanel.Controls)
+			foreach (ToDoControl toDo in FlowPanel.Controls)
 			{
-				if(toDo.ControlGUID == controlGUID)
+				if (toDo.ControlGUID == controlGUID)
 				{
 					dataAccess.RemoveToDo(toDo.assignedToDo.ID);
 					FlowPanel.Controls.Remove(toDo);
