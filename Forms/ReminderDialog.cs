@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace StupidToDo.Forms
 	{
 		private readonly Services.DataAccess dataAccess;
 		private readonly Records.ToDo assignedTask;
+		public bool Snoozed = false;
 		public ReminderDialog()
 		{
 			InitializeComponent();
@@ -28,7 +30,13 @@ namespace StupidToDo.Forms
 
 		private void ReminderDialog_Load(object sender, EventArgs e)
 		{
-			BodyRTF.Text = assignedTask.Body;
+			if (!Directory.Exists("./tmp"))
+				Directory.CreateDirectory("./tmp");
+			string filePath = $"./tmp/{assignedTask.ID}.rtf";
+			File.WriteAllText(filePath, assignedTask.Body);
+
+			BodyRTF.LoadFile(filePath);
+			File.Delete(filePath);
 			Text = assignedTask.Title;
 			if(assignedTask.Repeats)
 			{
@@ -71,8 +79,15 @@ namespace StupidToDo.Forms
 				}
 				dataAccess.UpdateToDo(assignedTask);
 			}
+			Snoozed = true;
 			DialogResult = DialogResult.OK;
 			Close();
+		}
+
+		private void BodyRTF_LinkClicked(object sender, LinkClickedEventArgs e)
+		{
+			string url = e.LinkText.Replace("&", "^&");
+			System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
 		}
 	}
 }

@@ -29,10 +29,10 @@ namespace StupidToDo.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.editEnabled = new System.Windows.Forms.CheckBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.titleBox = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.remindDate = new System.Windows.Forms.DateTimePicker();
 			this.reminderBox = new System.Windows.Forms.CheckBox();
 			this.CompleteButton = new System.Windows.Forms.Button();
@@ -44,6 +44,12 @@ namespace StupidToDo.Forms
 			this.everyLabel = new System.Windows.Forms.Label();
 			this.deleteBtn = new System.Windows.Forms.Button();
 			this.BodyBox = new System.Windows.Forms.RichTextBox();
+			this.ColorPicker = new System.Windows.Forms.ColorDialog();
+			this.BoldBtn = new System.Windows.Forms.Button();
+			this.ItalicBtn = new System.Windows.Forms.Button();
+			this.UnderlineBtn = new System.Windows.Forms.Button();
+			this.ColorBtn = new System.Windows.Forms.Button();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.EveryBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -75,15 +81,6 @@ namespace StupidToDo.Forms
 			this.titleBox.Size = new System.Drawing.Size(276, 23);
 			this.titleBox.TabIndex = 2;
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(8, 45);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(34, 15);
-			this.label2.TabIndex = 3;
-			this.label2.Text = "Body";
-			// 
 			// remindDate
 			// 
 			this.remindDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -111,6 +108,7 @@ namespace StupidToDo.Forms
 			this.CompleteButton.TabIndex = 7;
 			this.CompleteButton.Text = "Completed";
 			this.CompleteButton.UseVisualStyleBackColor = true;
+			this.CompleteButton.Click += new System.EventHandler(this.CompleteButton_Click);
 			// 
 			// remindTime
 			// 
@@ -192,17 +190,76 @@ namespace StupidToDo.Forms
 			// 
 			// BodyBox
 			// 
+			this.BodyBox.BackColor = System.Drawing.SystemColors.Window;
+			this.BodyBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.BodyBox.Location = new System.Drawing.Point(48, 45);
 			this.BodyBox.Name = "BodyBox";
 			this.BodyBox.Size = new System.Drawing.Size(275, 96);
-			this.BodyBox.TabIndex = 15;
+			this.BodyBox.TabIndex = 3;
 			this.BodyBox.Text = "";
+			this.BodyBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.BodyBox_LinkClicked);
+			this.BodyBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BodyBox_KeyDown);
+			// 
+			// BoldBtn
+			// 
+			this.BoldBtn.BackColor = System.Drawing.SystemColors.Control;
+			this.BoldBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.BoldBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.BoldBtn.Location = new System.Drawing.Point(11, 45);
+			this.BoldBtn.Margin = new System.Windows.Forms.Padding(0);
+			this.BoldBtn.Name = "BoldBtn";
+			this.BoldBtn.Size = new System.Drawing.Size(26, 23);
+			this.BoldBtn.TabIndex = 15;
+			this.BoldBtn.Text = "B";
+			this.BoldBtn.UseVisualStyleBackColor = false;
+			this.BoldBtn.Click += new System.EventHandler(this.BoldBtn_Click);
+			// 
+			// ItalicBtn
+			// 
+			this.ItalicBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.ItalicBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+			this.ItalicBtn.Location = new System.Drawing.Point(11, 69);
+			this.ItalicBtn.Name = "ItalicBtn";
+			this.ItalicBtn.Size = new System.Drawing.Size(26, 23);
+			this.ItalicBtn.TabIndex = 16;
+			this.ItalicBtn.Text = "I";
+			this.ItalicBtn.UseVisualStyleBackColor = true;
+			this.ItalicBtn.Click += new System.EventHandler(this.ItalicBtn_Click);
+			// 
+			// UnderlineBtn
+			// 
+			this.UnderlineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.UnderlineBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+			this.UnderlineBtn.Location = new System.Drawing.Point(11, 93);
+			this.UnderlineBtn.Name = "UnderlineBtn";
+			this.UnderlineBtn.Size = new System.Drawing.Size(26, 23);
+			this.UnderlineBtn.TabIndex = 17;
+			this.UnderlineBtn.Text = "U";
+			this.UnderlineBtn.UseVisualStyleBackColor = true;
+			this.UnderlineBtn.Click += new System.EventHandler(this.UnderlineBtn_Click);
+			// 
+			// ColorBtn
+			// 
+			this.ColorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.ColorBtn.Location = new System.Drawing.Point(11, 118);
+			this.ColorBtn.Name = "ColorBtn";
+			this.ColorBtn.Size = new System.Drawing.Size(26, 23);
+			this.ColorBtn.TabIndex = 18;
+			this.ColorBtn.UseVisualStyleBackColor = true;
+			this.ColorBtn.Click += new System.EventHandler(this.ColorBtn_Click);
+			// 
+			// timer1
+			// 
+			this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
 			// 
 			// ToDoControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.Controls.Add(this.ColorBtn);
+			this.Controls.Add(this.UnderlineBtn);
+			this.Controls.Add(this.ItalicBtn);
+			this.Controls.Add(this.BoldBtn);
 			this.Controls.Add(this.BodyBox);
 			this.Controls.Add(this.deleteBtn);
 			this.Controls.Add(this.everyLabel);
@@ -214,12 +271,11 @@ namespace StupidToDo.Forms
 			this.Controls.Add(this.CompleteButton);
 			this.Controls.Add(this.reminderBox);
 			this.Controls.Add(this.remindDate);
-			this.Controls.Add(this.label2);
 			this.Controls.Add(this.titleBox);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.editEnabled);
 			this.Name = "ToDoControl";
-			this.Size = new System.Drawing.Size(330, 285);
+			this.Size = new System.Drawing.Size(332, 287);
 			((System.ComponentModel.ISupportInitialize)(this.EveryBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -231,7 +287,6 @@ namespace StupidToDo.Forms
 		private System.Windows.Forms.CheckBox editEnabled;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox titleBox;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.DateTimePicker remindDate;
 		private System.Windows.Forms.CheckBox reminderBox;
 		private System.Windows.Forms.Button CompleteButton;
@@ -243,5 +298,11 @@ namespace StupidToDo.Forms
 		private System.Windows.Forms.Label everyLabel;
 		private System.Windows.Forms.Button deleteBtn;
 		private System.Windows.Forms.RichTextBox BodyBox;
+		private System.Windows.Forms.ColorDialog ColorPicker;
+		private System.Windows.Forms.Button BoldBtn;
+		private System.Windows.Forms.Button ItalicBtn;
+		private System.Windows.Forms.Button UnderlineBtn;
+		private System.Windows.Forms.Button ColorBtn;
+		private System.Windows.Forms.Timer timer1;
 	}
 }

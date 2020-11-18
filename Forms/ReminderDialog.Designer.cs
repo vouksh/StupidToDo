@@ -39,12 +39,14 @@ namespace StupidToDo.Forms
 			// 
 			// BodyRTF
 			// 
+			this.BodyRTF.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.BodyRTF.Location = new System.Drawing.Point(12, 12);
 			this.BodyRTF.Name = "BodyRTF";
 			this.BodyRTF.ReadOnly = true;
 			this.BodyRTF.Size = new System.Drawing.Size(313, 250);
 			this.BodyRTF.TabIndex = 0;
 			this.BodyRTF.Text = "";
+			this.BodyRTF.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.BodyRTF_LinkClicked);
 			// 
 			// MarkCompleteBtn
 			// 
@@ -90,16 +92,24 @@ namespace StupidToDo.Forms
 			// 
 			// ReminderDialog
 			// 
+			this.AcceptButton = this.MarkCompleteBtn;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.SnoozeBtn;
 			this.ClientSize = new System.Drawing.Size(337, 328);
+			this.ControlBox = false;
 			this.Controls.Add(this.IntervalBox);
 			this.Controls.Add(this.CountBox);
 			this.Controls.Add(this.SnoozeBtn);
 			this.Controls.Add(this.MarkCompleteBtn);
 			this.Controls.Add(this.BodyRTF);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "ReminderDialog";
+			this.ShowIcon = false;
+			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "ReminderDialog";
+			this.TopMost = true;
 			this.Load += new System.EventHandler(this.ReminderDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.CountBox)).EndInit();
 			this.ResumeLayout(false);

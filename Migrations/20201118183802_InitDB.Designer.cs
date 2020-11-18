@@ -9,7 +9,7 @@ using StupidToDo.Data;
 namespace StupidToDo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201113200110_InitDB")]
+    [Migration("20201118183802_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,11 +77,11 @@ namespace StupidToDo.Migrations
                         {
                             ID = 1,
                             AssignedListID = 1,
-                            Body = "Blah blah blah",
+                            Body = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang1033{\\fonttbl{\\f0\\fnil\\fcharset0 Segoe UI;}{\\f1\\fnil Segoe UI;}}\r\n{\\colortbl ;\\red255\\green128\\blue0;\\red0\\green128\\blue0;\\red0\\green0\\blue255;\\red255\\green0\\blue128;\\red255\\green0\\blue0;\\red128\\green0\\blue255;\\red0\\green0\\blue0;}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\pard\\b\\f0\\fs18 Bold\\par\r\n\\b0\\i Italic\\par\r\n\\ul\\i0 Underline\\par\r\n\\b Bold Underline\\par\r\n\\i Bold Underline Italic\\par\r\n\\cf1\\ulnone\\b0\\i0 P\\cf2 r\\cf3 et\\cf4 t\\cf5 y \\cf6\\b COLORS\\par\r\n{\\cf7\\b0{\\field{\\*\\fldinst{HYPERLINK http://www.google.com/ }}{\\fldrslt{http://www.google.com/\\ul0\\cf0}}}}\\cf7\\b0\\f0\\fs18  Even hyperlinks!\\cf0\\f1\\par\r\n}\r\n",
                             Completed = false,
-                            Created = new DateTime(2020, 11, 13, 15, 1, 10, 282, DateTimeKind.Local).AddTicks(2020),
+                            Created = new DateTime(2020, 11, 18, 13, 38, 2, 477, DateTimeKind.Local).AddTicks(4995),
                             DoReminder = false,
-                            Frequency = 4,
+                            Frequency = 5,
                             RepeatOnDay = 0,
                             Repeats = false,
                             Title = "Do something"

@@ -14,6 +14,20 @@ namespace StupidToDo.Forms
 			dataAccess = new Services.DataAccess();
 			InitializeComponent();
 			newItemMenuItem.Click += NewItemMenuItem_Click;
+			ExitStripBtn.Click += (object s, EventArgs e) => Close();
+			ShowWindowBtn.Click += (object s, EventArgs e) => RestoreFromMinimize();
+			ExitMenuBtn.Click += (object s, EventArgs e) => Close();
+			NewListBox.KeyDown += NewListBox_KeyDown;
+		}
+
+		private void NewListBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if(e.KeyCode == Keys.Enter)
+			{
+				dataAccess.AddNewList(NewListBox.Text);
+				NewListBox.Text = "";
+				ResetChildren();
+			}
 		}
 
 		private void NewItemMenuItem_Click(object sender, EventArgs e)
@@ -31,14 +45,14 @@ namespace StupidToDo.Forms
 					remindersShown = true;
 					foreach (var task in dueTasks)
 					{
-						var dialog = new Forms.ReminderDialog(ref dataAccess, task);
+						var dialog = new ReminderDialog(ref dataAccess, task);
 						while (dialog.ShowDialog() != DialogResult.OK) { }
-						if (!task.Repeats)
+						if (!task.Repeats && !dialog.Snoozed)
 						{
 							var ctrl = FlowPanel.Controls.Cast<ToDoControl>().FirstOrDefault(f => f.assignedToDo.ID == task.ID);
 							if (ctrl is not null)
 							{
-								RemoveToDo(ctrl.ControlGUID);
+								RemoveToDo(ctrl.ControlGUID, false);
 							}
 						}
 					}
@@ -53,6 +67,16 @@ namespace StupidToDo.Forms
 			{
 				FlowPanel.Controls.Clear();
 			}
+			listMenuCollection.DropDownItems.Clear();
+			foreach (var list in await dataAccess.GetLists())
+			{
+				var newItem = new ToolStripMenuItem(list.Name);
+				if (list.ID == Services.Config.SelectedListID)
+				{
+					newItem.Checked = true;
+				}
+				listMenuCollection.DropDownItems.Add(newItem);
+			}
 			foreach (var item in await dataAccess.GetCurrentListItems())
 			{
 				if (!item.Completed)
@@ -60,12 +84,8 @@ namespace StupidToDo.Forms
 			}
 		}
 
-		private async void MainForm_Load(object sender, EventArgs e)
+		private void MainForm_Load(object sender, EventArgs e)
 		{
-			foreach (var list in await dataAccess.GetLists())
-			{
-				listMenuCollection.DropDownItems.Add(list.Name);
-			}
 			listMenuCollection.DropDownItemClicked += ListMenuCollection_DropDownItemClicked;
 			ResetChildren();
 			reminderTimer.Start();
@@ -74,18 +94,42 @@ namespace StupidToDo.Forms
 		private void ListMenuCollection_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
 			dataAccess.SwitchList(e.ClickedItem.Text);
+			ResetChildren();
 		}
 
-		public void RemoveToDo(Guid controlGUID)
+		public void RemoveToDo(Guid controlGUID, bool delete = true)
 		{
 			foreach (ToDoControl toDo in FlowPanel.Controls)
 			{
 				if (toDo.ControlGUID == controlGUID)
 				{
-					dataAccess.RemoveToDo(toDo.assignedToDo.ID);
+					if(delete)
+						dataAccess.RemoveToDo(toDo.assignedToDo.ID);
+
 					FlowPanel.Controls.Remove(toDo);
 					return;
 				}
+			}
+		}
+
+		private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			RestoreFromMinimize();
+		}
+
+		private void RestoreFromMinimize()
+		{
+			Show();
+			WindowState = FormWindowState.Normal;
+			notifyIcon.Visible = false;
+		}
+
+		private void MainForm_Resize(object sender, EventArgs e)
+		{
+			if (WindowState == FormWindowState.Minimized)
+			{
+				Hide();
+				notifyIcon.Visible = true;
 			}
 		}
 	}

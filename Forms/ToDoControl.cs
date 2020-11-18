@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Linq;
+using System.IO;
 
 namespace StupidToDo.Forms
 {
@@ -26,7 +27,9 @@ namespace StupidToDo.Forms
 			InitializeComponent();
 			editEnabled.Checked = true;
 			SwapLocations();
+			ToggleReminderControls();
 			assignedToDo = dataAccess.AddNewToDo().Result;
+			timer1.Start();
 		}
 
 		public ToDoControl(Records.ToDo toDo, ref Services.DataAccess _dataAccess)
@@ -37,7 +40,16 @@ namespace StupidToDo.Forms
 			if (assignedToDo is not null)
 			{
 				titleBox.Text = assignedToDo.Title;
-				BodyBox.Text = assignedToDo.Body;
+				if (!Directory.Exists("./tmp"))
+					Directory.CreateDirectory("./tmp");
+				try
+				{
+					string filePath = $"./tmp/{assignedToDo.ID}.rtf";
+					File.WriteAllText(filePath, assignedToDo.Body);
+					BodyBox.LoadFile(filePath);
+					File.Delete(filePath);
+				}
+				catch { }
 				reminderBox.Checked = assignedToDo.DoReminder;
 				if (assignedToDo.DoReminder)
 				{
@@ -56,7 +68,8 @@ namespace StupidToDo.Forms
 				}
 				ToggleReminderControls();
 				DisableEdit();
-			} else
+			}
+			else
 			{
 				editEnabled.Checked = true;
 			}
@@ -66,13 +79,19 @@ namespace StupidToDo.Forms
 		{
 			foreach (Control control in Controls)
 			{
-				if (control is not Label and not Button)
+				if (control is not Label and not Button and not RichTextBox)
 				{
 					control.Enabled = false;
 				}
 			}
 			SwapLocations();
+			timer1.Stop();
+			BodyBox.ReadOnly = true;
 			editEnabled.Enabled = true;
+			BoldBtn.Visible = false;
+			ItalicBtn.Visible = false;
+			UnderlineBtn.Visible = false;
+			ColorBtn.Visible = false;
 		}
 
 		private void SwapLocations()
@@ -87,30 +106,45 @@ namespace StupidToDo.Forms
 			CompleteButton.Location = newBtnLoc;
 			Point delBtnPt = new Point(deleteBtn.Location.X, CompleteButton.Location.Y);
 			deleteBtn.Location = delBtnPt;
-			if (Height == 285)
+			if (Height == 287)
 			{
 				Height = 175;
 				remindTime.Visible = false;
-			} else
+			}
+			else
 			{
-				Height = 285;
+				Height = 287;
 			}
 		}
 
 		private void EditEnabled_CheckedChanged(object sender, EventArgs e)
 		{
-			if(editEnabled.Checked)
+			if (editEnabled.Checked)
 			{
-				foreach(var control in Controls)
+				foreach (var control in Controls)
 				{
 					(control as Control).Enabled = true;
 				}
-				SwapLocations();
 				ToggleReminderControls();
-			} else
+				SwapLocations();
+				timer1.Start();
+				BodyBox.ReadOnly = false;
+				BoldBtn.Visible = true;
+				ItalicBtn.Visible = true;
+				UnderlineBtn.Visible = true;
+				ColorBtn.Visible = true;
+			}
+			else
 			{
+				if (!Directory.Exists("./tmp"))
+					Directory.CreateDirectory("./tmp");
+
+				string filePath = $"./tmp/{assignedToDo.ID}.rtf";
+				BodyBox.SaveFile(filePath);
+				assignedToDo.Body = File.ReadAllText(filePath);
+				File.Delete(filePath);
+
 				assignedToDo.Title = titleBox.Text;
-				assignedToDo.Body = BodyBox.Text;
 				assignedToDo.Edited = DateTime.Now;
 				assignedToDo.DoReminder = reminderBox.Checked;
 				if (reminderBox.Checked)
@@ -140,11 +174,12 @@ namespace StupidToDo.Forms
 
 		private void RepeatsOnBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(RepeatsOnBox.SelectedIndex == (int)Records.RepeatFrequency.DayOfWeek)
+			if (RepeatsOnBox.SelectedIndex == (int)Records.RepeatFrequency.DayOfWeek)
 			{
 				DayOfWeekBox.Visible = true;
 				EveryBox.Visible = false;
-			} else
+			}
+			else
 			{
 				DayOfWeekBox.Visible = false;
 				EveryBox.Visible = true;
@@ -199,7 +234,7 @@ namespace StupidToDo.Forms
 
 		private void RepeatBox_CheckedChanged(object sender, EventArgs e)
 		{
-			if(RepeatBox.Checked)
+			if (RepeatBox.Checked)
 			{
 				everyLabel.Visible = true;
 				remindDate.Visible = false;
@@ -207,7 +242,8 @@ namespace StupidToDo.Forms
 				RepeatsOnBox.Visible = true;
 				DayOfWeekBox.Visible = true;
 				EveryBox.Visible = true;
-			} else
+			}
+			else
 			{
 				everyLabel.Visible = false;
 				remindDate.Visible = true;
@@ -216,6 +252,151 @@ namespace StupidToDo.Forms
 				DayOfWeekBox.Visible = false;
 				EveryBox.Visible = false;
 			}
+		}
+
+		private void ColorBtn_Click(object sender, EventArgs e)
+		{
+			ColorPicker.ShowDialog();
+			BodyBox.SelectionColor = ColorPicker.Color;
+		}
+
+		private void BoldBtn_Click(object sender, EventArgs e)
+		{
+			ToggleBold();
+		}
+
+		private void ToggleBold()
+		{
+			if (BodyBox.SelectionFont.Bold)
+			{
+				FontStyle newStyle = FontStyle.Regular;
+				if (BodyBox.SelectionFont.Italic)
+					newStyle = FontStyle.Italic;
+				if (BodyBox.SelectionFont.Underline)
+					newStyle |= FontStyle.Underline;
+
+				BodyBox.SelectionFont = new Font(BodyBox.SelectionFont, newStyle);
+			}
+			else
+			{
+				FontStyle newStyle = FontStyle.Bold;
+				if (BodyBox.SelectionFont.Italic)
+					newStyle |= FontStyle.Italic;
+				if (BodyBox.SelectionFont.Underline)
+					newStyle |= FontStyle.Underline;
+
+				BodyBox.SelectionFont = new Font(BodyBox.SelectionFont, newStyle);
+			}
+		}
+
+		private void ItalicBtn_Click(object sender, EventArgs e)
+		{
+			ToggleItalic();
+		}
+
+		private void ToggleItalic()
+		{
+			if (BodyBox.SelectionFont.Italic)
+			{
+				FontStyle newStyle = FontStyle.Regular;
+				if (BodyBox.SelectionFont.Bold)
+					newStyle = FontStyle.Bold;
+				if (BodyBox.SelectionFont.Underline)
+					newStyle |= FontStyle.Underline;
+
+				BodyBox.SelectionFont = new Font(BodyBox.SelectionFont, newStyle);
+			}
+			else
+			{
+				FontStyle newStyle = FontStyle.Italic;
+				if (BodyBox.SelectionFont.Bold)
+					newStyle |= FontStyle.Bold;
+				if (BodyBox.SelectionFont.Underline)
+					newStyle |= FontStyle.Underline;
+
+				BodyBox.SelectionFont = new Font(BodyBox.SelectionFont, newStyle);
+			}
+		}
+
+		private void UnderlineBtn_Click(object sender, EventArgs e)
+		{
+			ToggleUnderline();
+		}
+
+		public void ToggleUnderline()
+		{
+			if (BodyBox.SelectionFont.Underline)
+			{
+				FontStyle newStyle = FontStyle.Regular;
+				if (BodyBox.SelectionFont.Bold)
+					newStyle = FontStyle.Bold;
+				if (BodyBox.SelectionFont.Italic)
+					newStyle |= FontStyle.Italic;
+
+				BodyBox.SelectionFont = new Font(BodyBox.SelectionFont, newStyle);
+			}
+			else
+			{
+				FontStyle newStyle = FontStyle.Underline;
+				if (BodyBox.SelectionFont.Bold)
+					newStyle |= FontStyle.Bold;
+				if (BodyBox.SelectionFont.Underline)
+					newStyle |= FontStyle.Underline;
+
+				BodyBox.SelectionFont = new Font(BodyBox.SelectionFont, newStyle);
+			}
+		}
+
+		private void BodyBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control)
+			{
+				switch (e.KeyCode)
+				{
+					case Keys.B:
+						ToggleBold();
+						break;
+					case Keys.I:
+						ToggleItalic();
+						break;
+					case Keys.U:
+						ToggleUnderline();
+						break;
+				}
+			}
+		}
+
+		private void Timer1_Tick(object sender, EventArgs e)
+		{
+			if (BodyBox.SelectionFont.Bold)
+				BoldBtn.BackColor = SystemColors.ControlDark;
+			else
+				BoldBtn.BackColor = SystemColors.Control;
+
+			if (BodyBox.SelectionFont.Italic)
+				ItalicBtn.BackColor = SystemColors.ControlDark;
+			else
+				ItalicBtn.BackColor = SystemColors.Control;
+
+			if (BodyBox.SelectionFont.Underline)
+				UnderlineBtn.BackColor = SystemColors.ControlDark;
+			else
+				UnderlineBtn.BackColor = SystemColors.Control;
+
+			ColorBtn.BackColor = BodyBox.SelectionColor;
+		}
+
+		private void BodyBox_LinkClicked(object sender, LinkClickedEventArgs e)
+		{
+			string url = e.LinkText.Replace("&", "^&");
+			System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+		}
+
+		private void CompleteButton_Click(object sender, EventArgs e)
+		{
+			assignedToDo.Completed = true;
+			dataAccess.UpdateToDo(assignedToDo);
+			(Parent.Parent as MainForm).RemoveToDo(ControlGUID, false);
 		}
 	}
 }
