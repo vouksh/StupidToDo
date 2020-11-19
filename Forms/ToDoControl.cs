@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Linq;
 using System.IO;
+using StupidToDo.Services;
 
 namespace StupidToDo.Forms
 {
@@ -14,14 +15,14 @@ namespace StupidToDo.Forms
 	{
 		public Records.ToDo assignedToDo;
 		public Guid ControlGUID { get; set; } = Guid.NewGuid();
-		private readonly Services.DataAccess dataAccess;
+		private readonly DataAccess dataAccess;
 		public ToDoControl()
 		{
 			InitializeComponent();
 			editEnabled.Checked = true;
 		}
 
-		public ToDoControl(ref Services.DataAccess _dataAccess)
+		public ToDoControl(ref DataAccess _dataAccess)
 		{
 			dataAccess = _dataAccess;
 			InitializeComponent();
@@ -32,7 +33,7 @@ namespace StupidToDo.Forms
 			timer1.Start();
 		}
 
-		public ToDoControl(Records.ToDo toDo, ref Services.DataAccess _dataAccess)
+		public ToDoControl(Records.ToDo toDo, ref DataAccess _dataAccess)
 		{
 			assignedToDo = toDo;
 			dataAccess = _dataAccess;
@@ -65,6 +66,10 @@ namespace StupidToDo.Forms
 						remindDate.Value = assignedToDo.RemindDate.Value.Date;
 						remindTime.Value = assignedToDo.RemindTime.Value;
 					}
+				}
+				if (assignedToDo.Completed)
+				{
+					CompleteButton.Visible = false;
 				}
 				ToggleReminderControls();
 				DisableEdit();
@@ -152,8 +157,8 @@ namespace StupidToDo.Forms
 					if (RepeatBox.Checked)
 					{
 						assignedToDo.Repeats = RepeatBox.Checked;
-						assignedToDo.RepeatOnDay = (Records.DayOfWeek)DayOfWeekBox.SelectedIndex;
-						assignedToDo.RepeatEvery = Convert.ToInt32(EveryBox.Value);
+						assignedToDo.RepeatOnDay = (DayOfWeek)DayOfWeekBox.SelectedIndex;
+						assignedToDo.RepeatEvery = EveryBox.Value;
 						assignedToDo.Frequency = (Records.RepeatFrequency)RepeatsOnBox.SelectedIndex;
 					}
 					else
@@ -178,17 +183,22 @@ namespace StupidToDo.Forms
 			{
 				DayOfWeekBox.Visible = true;
 				EveryBox.Visible = false;
+				remindTime.Visible = true;
 			}
 			else
 			{
 				DayOfWeekBox.Visible = false;
 				EveryBox.Visible = true;
+				remindTime.Visible = false;
 			}
 		}
 
 		private void DeleteBtn_Click(object sender, EventArgs e)
 		{
-			(Parent.Parent as MainForm).RemoveToDo(ControlGUID);
+			if (MessageBox.Show("Are you sure you want to delete this task?", "StupidToDo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				(Parent.Parent as MainForm).RemoveToDo(ControlGUID);
+			}
 		}
 
 		private void ToggleReminderControls()
@@ -242,6 +252,7 @@ namespace StupidToDo.Forms
 				RepeatsOnBox.Visible = true;
 				DayOfWeekBox.Visible = true;
 				EveryBox.Visible = true;
+				CompleteButton.Visible = false;
 			}
 			else
 			{
@@ -251,6 +262,10 @@ namespace StupidToDo.Forms
 				RepeatsOnBox.Visible = false;
 				DayOfWeekBox.Visible = false;
 				EveryBox.Visible = false;
+				if (!assignedToDo.Completed)
+				{
+					CompleteButton.Visible = true;
+				}
 			}
 		}
 
@@ -384,6 +399,13 @@ namespace StupidToDo.Forms
 				UnderlineBtn.BackColor = SystemColors.Control;
 
 			ColorBtn.BackColor = BodyBox.SelectionColor;
+			if(ColorBtn.BackColor.R * 0.2126 + ColorBtn.BackColor.G * 0.7152 + ColorBtn.BackColor.B * 0.0722 > 255 / 2)
+			{
+				ColorBtn.IconColor = Color.Black;
+			} else
+			{
+				ColorBtn.IconColor = Color.White;
+			}
 		}
 
 		private void BodyBox_LinkClicked(object sender, LinkClickedEventArgs e)
@@ -395,8 +417,10 @@ namespace StupidToDo.Forms
 		private void CompleteButton_Click(object sender, EventArgs e)
 		{
 			assignedToDo.Completed = true;
+			CompleteButton.Visible = false;
 			dataAccess.UpdateToDo(assignedToDo);
-			(Parent.Parent as MainForm).RemoveToDo(ControlGUID, false);
+			if(!Config.ShowCompleted)
+				(Parent.Parent as MainForm).RemoveToDo(ControlGUID, false);
 		}
 	}
 }

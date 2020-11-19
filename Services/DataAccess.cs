@@ -17,8 +17,17 @@ namespace StupidToDo.Services
 			dbContext = new DataContext();
 		}
 
+		public async void SwitchToFirstList()
+		{
+			var newList = await dbContext.Lists.FirstAsync();
+			Config.SelectedListID = newList.ID;
+		}
+
 		public async void SwitchList(string listName)
 		{
+			if (string.IsNullOrWhiteSpace(listName))
+				throw new ArgumentException($"Argument cannot be null or empty", nameof(listName));
+
 			var list = await dbContext.Lists.FirstOrDefaultAsync(l => l.Name == listName);
 			if (list is not null)
 			{
@@ -83,10 +92,13 @@ namespace StupidToDo.Services
 			return await dbContext.Lists.ToListAsync();
 		}
 
-		public async void AddNewList(string listName)
+		public async Task AddNewList(string listName)
 		{
 			if (dbContext.Lists.Any(l => l.Name == listName))
 				throw new InvalidOperationException("List with that name already exists");
+			if (string.IsNullOrWhiteSpace(listName))
+				throw new ArgumentException($"Argument cannot be null or empty", nameof(listName));
+
 			var newList = new ToDoList
 			{
 				Name = listName
@@ -94,6 +106,16 @@ namespace StupidToDo.Services
 			dbContext.Lists.Add(newList);
 			await dbContext.SaveChangesAsync();
 			Config.SelectedListID = newList.ID;
+		}
+
+		public async Task<int> GetListID(string listName)
+		{
+			var foundTask = await dbContext.Lists.FirstOrDefaultAsync(l => l.Name == listName);
+			if(foundTask is not null)
+			{
+				return foundTask.ID;
+			}
+			return -1;
 		}
 		
 		public async void DeleteList(int listID, bool migrate, int? migrateListID)
@@ -116,7 +138,14 @@ namespace StupidToDo.Services
 		public async Task<List<ToDo>> ItemsDueNow()
 		{
 			List<ToDo> retList = new List<ToDo>();
-			var start = await dbContext.Items.Where(t => t.DoReminder && !t.Completed).ToListAsync();
+			List<ToDo> start;
+			if (!Config.OnlyRemindForActiveList)
+			{
+				start = await dbContext.Items.Where(t => t.DoReminder && !t.Completed).ToListAsync();
+			} else
+			{
+				start = await dbContext.Items.Where(t => t.DoReminder && !t.Completed && t.AssignedListID == Config.SelectedListID).ToListAsync();
+			}
 			foreach(var item in start.Where(t => t.RemindDate.HasValue && DateTime.Today >= t.RemindDate.Value))
 			{
 				if(DateTime.Now.TimeOfDay >= item.RemindTime.Value.TimeOfDay)
@@ -129,31 +158,31 @@ namespace StupidToDo.Services
 					switch (item.Frequency)
 					{
 						case RepeatFrequency.Daily:
-							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value))
+							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Weekly:
-							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value * 7))
+							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value * 7)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Hourly:
-							if ((DateTime.Now - item.Created) >= TimeSpan.FromHours(item.RepeatEvery.Value))
+							if ((DateTime.Now - item.Created) >= TimeSpan.FromHours(decimal.ToDouble(item.RepeatEvery.Value)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Minutely:
-							if ((DateTime.Now - item.Created) >= TimeSpan.FromMinutes(item.RepeatEvery.Value))
+							if ((DateTime.Now - item.Created) >= TimeSpan.FromMinutes(decimal.ToDouble(item.RepeatEvery.Value)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.DayOfWeek:
-							if(item.Created.DayOfWeek == DateTime.Now.DayOfWeek)
+							if(item.RepeatOnDay == DateTime.Now.DayOfWeek && item.Created.Date != DateTime.Today && DateTime.Now.TimeOfDay >= item.RemindTime.Value.TimeOfDay)
 							{
 								retList.Add(item);
 							}
@@ -165,31 +194,31 @@ namespace StupidToDo.Services
 					switch (item.Frequency)
 					{
 						case RepeatFrequency.Daily:
-							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value))
+							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Weekly:
-							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(item.RepeatEvery.Value * 7))
+							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value * 7)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Hourly:
-							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromHours(item.RepeatEvery.Value))
+							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromHours(decimal.ToDouble(item.RepeatEvery.Value)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.Minutely:
-							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromMinutes(item.RepeatEvery.Value))
+							if ((DateTime.Now - item.LastRepeat.Value) >= TimeSpan.FromMinutes(decimal.ToDouble(item.RepeatEvery.Value)))
 							{
 								retList.Add(item);
 							}
 							break;
 						case RepeatFrequency.DayOfWeek:
-							if (item.LastRepeat.Value.DayOfWeek == DateTime.Now.DayOfWeek)
+							if (item.LastRepeat.Value.DayOfWeek == DateTime.Now.DayOfWeek && item.LastRepeat.Value.Date != DateTime.Today && DateTime.Now.TimeOfDay >= item.RemindTime.Value.TimeOfDay)
 							{
 								retList.Add(item);
 							}

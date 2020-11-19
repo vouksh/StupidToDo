@@ -19,7 +19,7 @@ namespace StupidToDo.Records
 		public DateTime? RemindDate { get; set; }
 		public DateTime? RemindTime { get; set; }
 		public RepeatFrequency Frequency { get; set; } = RepeatFrequency.Never;
-		public int? RepeatEvery { get; set; }
+		public decimal? RepeatEvery { get; set; }
 		public DayOfWeek RepeatOnDay { get; set; }
 		public DateTime? LastRepeat { get; set; }
 		public DateTime Created { get; set; } = DateTime.Now;
@@ -33,15 +33,5 @@ namespace StupidToDo.Records
 		Hourly,
 		Minutely,
 		Never
-	}
-	public enum DayOfWeek
-	{
-		Sunday,
-		Monday,
-		Tuesday,
-		Wednesday,
-		Thursday,
-		Friday,
-		Saturday
 	}
 }

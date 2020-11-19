@@ -35,20 +35,20 @@ namespace StupidToDo.Forms
 			this.titleBox = new System.Windows.Forms.TextBox();
 			this.remindDate = new System.Windows.Forms.DateTimePicker();
 			this.reminderBox = new System.Windows.Forms.CheckBox();
-			this.CompleteButton = new System.Windows.Forms.Button();
+			this.CompleteButton = new FontAwesome.Sharp.IconButton();
 			this.remindTime = new System.Windows.Forms.DateTimePicker();
 			this.RepeatBox = new System.Windows.Forms.CheckBox();
 			this.RepeatsOnBox = new System.Windows.Forms.ComboBox();
 			this.DayOfWeekBox = new System.Windows.Forms.ComboBox();
 			this.EveryBox = new System.Windows.Forms.NumericUpDown();
 			this.everyLabel = new System.Windows.Forms.Label();
-			this.deleteBtn = new System.Windows.Forms.Button();
+			this.deleteBtn = new FontAwesome.Sharp.IconButton();
 			this.BodyBox = new System.Windows.Forms.RichTextBox();
 			this.ColorPicker = new System.Windows.Forms.ColorDialog();
-			this.BoldBtn = new System.Windows.Forms.Button();
-			this.ItalicBtn = new System.Windows.Forms.Button();
-			this.UnderlineBtn = new System.Windows.Forms.Button();
-			this.ColorBtn = new System.Windows.Forms.Button();
+			this.BoldBtn = new FontAwesome.Sharp.IconButton();
+			this.ItalicBtn = new FontAwesome.Sharp.IconButton();
+			this.UnderlineBtn = new FontAwesome.Sharp.IconButton();
+			this.ColorBtn = new FontAwesome.Sharp.IconButton();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.EveryBox)).BeginInit();
 			this.SuspendLayout();
@@ -102,11 +102,17 @@ namespace StupidToDo.Forms
 			// 
 			// CompleteButton
 			// 
+			this.CompleteButton.IconChar = FontAwesome.Sharp.IconChar.CheckDouble;
+			this.CompleteButton.IconColor = System.Drawing.Color.DarkGreen;
+			this.CompleteButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.CompleteButton.IconSize = 19;
+			this.CompleteButton.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
 			this.CompleteButton.Location = new System.Drawing.Point(89, 255);
 			this.CompleteButton.Name = "CompleteButton";
-			this.CompleteButton.Size = new System.Drawing.Size(75, 23);
+			this.CompleteButton.Size = new System.Drawing.Size(88, 23);
 			this.CompleteButton.TabIndex = 7;
 			this.CompleteButton.Text = "Completed";
+			this.CompleteButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.CompleteButton.UseVisualStyleBackColor = true;
 			this.CompleteButton.Click += new System.EventHandler(this.CompleteButton_Click);
 			// 
@@ -164,9 +170,11 @@ namespace StupidToDo.Forms
 			// 
 			// EveryBox
 			// 
-			this.EveryBox.Location = new System.Drawing.Point(57, 210);
+			this.EveryBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.EveryBox.DecimalPlaces = 2;
+			this.EveryBox.Location = new System.Drawing.Point(48, 210);
 			this.EveryBox.Name = "EveryBox";
-			this.EveryBox.Size = new System.Drawing.Size(38, 23);
+			this.EveryBox.Size = new System.Drawing.Size(47, 23);
 			this.EveryBox.TabIndex = 12;
 			// 
 			// everyLabel
@@ -180,11 +188,17 @@ namespace StupidToDo.Forms
 			// 
 			// deleteBtn
 			// 
-			this.deleteBtn.Location = new System.Drawing.Point(274, 254);
+			this.deleteBtn.IconChar = FontAwesome.Sharp.IconChar.TimesCircle;
+			this.deleteBtn.IconColor = System.Drawing.Color.Firebrick;
+			this.deleteBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.deleteBtn.IconSize = 20;
+			this.deleteBtn.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+			this.deleteBtn.Location = new System.Drawing.Point(258, 254);
 			this.deleteBtn.Name = "deleteBtn";
-			this.deleteBtn.Size = new System.Drawing.Size(49, 23);
+			this.deleteBtn.Size = new System.Drawing.Size(65, 23);
 			this.deleteBtn.TabIndex = 14;
 			this.deleteBtn.Text = "Delete";
+			this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.deleteBtn.UseVisualStyleBackColor = true;
 			this.deleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
 			// 
@@ -205,12 +219,16 @@ namespace StupidToDo.Forms
 			this.BoldBtn.BackColor = System.Drawing.SystemColors.Control;
 			this.BoldBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.BoldBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.BoldBtn.IconChar = FontAwesome.Sharp.IconChar.Bold;
+			this.BoldBtn.IconColor = System.Drawing.Color.Black;
+			this.BoldBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.BoldBtn.IconSize = 18;
+			this.BoldBtn.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
 			this.BoldBtn.Location = new System.Drawing.Point(11, 45);
 			this.BoldBtn.Margin = new System.Windows.Forms.Padding(0);
 			this.BoldBtn.Name = "BoldBtn";
 			this.BoldBtn.Size = new System.Drawing.Size(26, 23);
 			this.BoldBtn.TabIndex = 15;
-			this.BoldBtn.Text = "B";
 			this.BoldBtn.UseVisualStyleBackColor = false;
 			this.BoldBtn.Click += new System.EventHandler(this.BoldBtn_Click);
 			// 
@@ -218,11 +236,15 @@ namespace StupidToDo.Forms
 			// 
 			this.ItalicBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.ItalicBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+			this.ItalicBtn.IconChar = FontAwesome.Sharp.IconChar.Italic;
+			this.ItalicBtn.IconColor = System.Drawing.Color.Black;
+			this.ItalicBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.ItalicBtn.IconSize = 16;
+			this.ItalicBtn.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
 			this.ItalicBtn.Location = new System.Drawing.Point(11, 69);
 			this.ItalicBtn.Name = "ItalicBtn";
 			this.ItalicBtn.Size = new System.Drawing.Size(26, 23);
 			this.ItalicBtn.TabIndex = 16;
-			this.ItalicBtn.Text = "I";
 			this.ItalicBtn.UseVisualStyleBackColor = true;
 			this.ItalicBtn.Click += new System.EventHandler(this.ItalicBtn_Click);
 			// 
@@ -230,17 +252,26 @@ namespace StupidToDo.Forms
 			// 
 			this.UnderlineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.UnderlineBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+			this.UnderlineBtn.IconChar = FontAwesome.Sharp.IconChar.Underline;
+			this.UnderlineBtn.IconColor = System.Drawing.Color.Black;
+			this.UnderlineBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.UnderlineBtn.IconSize = 16;
+			this.UnderlineBtn.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
 			this.UnderlineBtn.Location = new System.Drawing.Point(11, 93);
 			this.UnderlineBtn.Name = "UnderlineBtn";
 			this.UnderlineBtn.Size = new System.Drawing.Size(26, 23);
 			this.UnderlineBtn.TabIndex = 17;
-			this.UnderlineBtn.Text = "U";
 			this.UnderlineBtn.UseVisualStyleBackColor = true;
 			this.UnderlineBtn.Click += new System.EventHandler(this.UnderlineBtn_Click);
 			// 
 			// ColorBtn
 			// 
 			this.ColorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.ColorBtn.IconChar = FontAwesome.Sharp.IconChar.Palette;
+			this.ColorBtn.IconColor = System.Drawing.Color.Black;
+			this.ColorBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.ColorBtn.IconSize = 18;
+			this.ColorBtn.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
 			this.ColorBtn.Location = new System.Drawing.Point(11, 118);
 			this.ColorBtn.Name = "ColorBtn";
 			this.ColorBtn.Size = new System.Drawing.Size(26, 23);
@@ -289,20 +320,20 @@ namespace StupidToDo.Forms
 		private System.Windows.Forms.TextBox titleBox;
 		private System.Windows.Forms.DateTimePicker remindDate;
 		private System.Windows.Forms.CheckBox reminderBox;
-		private System.Windows.Forms.Button CompleteButton;
+		private FontAwesome.Sharp.IconButton CompleteButton;
 		private System.Windows.Forms.DateTimePicker remindTime;
 		private System.Windows.Forms.CheckBox RepeatBox;
 		private System.Windows.Forms.ComboBox RepeatsOnBox;
 		private System.Windows.Forms.ComboBox DayOfWeekBox;
 		private System.Windows.Forms.NumericUpDown EveryBox;
 		private System.Windows.Forms.Label everyLabel;
-		private System.Windows.Forms.Button deleteBtn;
+		private FontAwesome.Sharp.IconButton deleteBtn;
 		private System.Windows.Forms.RichTextBox BodyBox;
 		private System.Windows.Forms.ColorDialog ColorPicker;
-		private System.Windows.Forms.Button BoldBtn;
-		private System.Windows.Forms.Button ItalicBtn;
-		private System.Windows.Forms.Button UnderlineBtn;
-		private System.Windows.Forms.Button ColorBtn;
+		private FontAwesome.Sharp.IconButton BoldBtn;
+		private FontAwesome.Sharp.IconButton ItalicBtn;
+		private FontAwesome.Sharp.IconButton UnderlineBtn;
+		private FontAwesome.Sharp.IconButton ColorBtn;
 		private System.Windows.Forms.Timer timer1;
 	}
 }

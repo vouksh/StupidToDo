@@ -3,30 +3,83 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using StupidToDo.Services;
+using FontAwesome.Sharp;
+using System.Drawing;
 
 namespace StupidToDo.Forms
 {
 	public partial class MainForm : Form
 	{
-		private Services.DataAccess dataAccess;
+		private DataAccess dataAccess;
 		public MainForm()
 		{
-			dataAccess = new Services.DataAccess();
+			dataAccess = new DataAccess();
 			InitializeComponent();
-			newItemMenuItem.Click += NewItemMenuItem_Click;
-			ExitStripBtn.Click += (object s, EventArgs e) => Close();
-			ShowWindowBtn.Click += (object s, EventArgs e) => RestoreFromMinimize();
-			ExitMenuBtn.Click += (object s, EventArgs e) => Close();
-			NewListBox.KeyDown += NewListBox_KeyDown;
+			InitializeActions();
 		}
 
-		private void NewListBox_KeyDown(object sender, KeyEventArgs e)
+		private void InitializeActions()
+		{
+			newItemMenuItem.Click += NewItemMenuItem_Click;
+
+			ExitStripBtn.Image = IconChar.Times.ToBitmap(Color.Red, 18);
+			ExitStripBtn.ImageAlign = ContentAlignment.MiddleCenter;
+			ExitStripBtn.Click += (object s, EventArgs e) => Close();
+
+			ShowWindowBtn.Image = IconChar.WindowRestore.ToBitmap(Color.Blue, 18);
+			ShowWindowBtn.ImageAlign = ContentAlignment.MiddleCenter;
+			ShowWindowBtn.Click += (object s, EventArgs e) => RestoreFromMinimize();
+
+			ExitMenuBtn.Click += (object s, EventArgs e) => Close();
+
+			NewListBox.KeyDown += NewListBox_KeyDown;
+
+			ToggleMinimizeToTray.Checked = Config.MinimizeToTray;
+			ToggleMinimizeToTray.CheckedChanged += (object s, EventArgs e) =>
+			{
+				Config.MinimizeToTray = ToggleMinimizeToTray.Checked;
+			};
+
+			ToggleCompletedTasks.Checked = Config.ShowCompleted;
+			ToggleCompletedTasks.CheckedChanged += (object s, EventArgs e) =>
+			{
+				Config.ShowCompleted = ToggleCompletedTasks.Checked;
+				ResetChildren();
+			};
+
+			DeleteList.Click += (object s, EventArgs e) =>
+			{
+				new DeleteListForm(ref dataAccess).ShowDialog();
+				ResetChildren();
+			};
+			ToggleListReminders.Checked = Config.OnlyRemindForActiveList;
+			ToggleListReminders.CheckedChanged += (object s, EventArgs e) =>
+			{
+				Config.OnlyRemindForActiveList = ToggleListReminders.Checked;
+			};
+		}
+
+		private async void NewListBox_KeyDown(object sender, KeyEventArgs e)
 		{
 			if(e.KeyCode == Keys.Enter)
 			{
-				dataAccess.AddNewList(NewListBox.Text);
+				try
+				{
+					await dataAccess.AddNewList(NewListBox.Text);
+					ResetChildren();
+					fileToolStripMenuItem.DropDown.Close();
+				} 
+				catch(ArgumentException ex)
+				{
+					MessageBox.Show(ex.Message, "Couldn't add new list", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+				catch(InvalidOperationException oex)
+				{
+					MessageBox.Show(oex.Message, "Couldn't add new list", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+
 				NewListBox.Text = "";
-				ResetChildren();
 			}
 		}
 
@@ -68,18 +121,33 @@ namespace StupidToDo.Forms
 				FlowPanel.Controls.Clear();
 			}
 			listMenuCollection.DropDownItems.Clear();
-			foreach (var list in await dataAccess.GetLists())
+			NewListBox.TextBox.PlaceholderText = "New list name";
+			NewListBox.Width = listMenuCollection.DropDown.Width;
+			listMenuCollection.DropDownItems.Add(NewListBox);
+			var listCollection = await dataAccess.GetLists();
+			if(listCollection.Count == 1)
 			{
-				var newItem = new ToolStripMenuItem(list.Name);
-				if (list.ID == Services.Config.SelectedListID)
+				DeleteList.Enabled = false;
+				DeleteList.Visible = false;
+			} else
+			{
+				DeleteList.Enabled = true;
+				DeleteList.Visible = true;
+			}
+			foreach (var list in listCollection)
+			{
+				var newItem = new IconMenuItem()
 				{
-					newItem.Checked = true;
-				}
+					Text = list.Name,
+					IconChar = list.ID == Config.SelectedListID ? IconChar.Check : IconChar.ExchangeAlt,
+					Checked = list.ID == Config.SelectedListID
+				};
+
 				listMenuCollection.DropDownItems.Add(newItem);
 			}
 			foreach (var item in await dataAccess.GetCurrentListItems())
 			{
-				if (!item.Completed)
+				if (!item.Completed || Config.ShowCompleted)
 					FlowPanel.Controls.Add(new ToDoControl(item, ref dataAccess));
 			}
 		}

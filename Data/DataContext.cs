@@ -12,14 +12,14 @@ namespace StupidToDo.Data
 	{
 		public DataContext()
 		{
-			if(!File.Exists($"{AppContext.BaseDirectory}todo.db"))
+			if(!File.Exists($"{AppContext.BaseDirectory}StupidToDo.db"))
 			{
 				this.Database.Migrate();
 			}
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder builder)
 		{
-			builder.UseSqlite($"Data Source={AppContext.BaseDirectory}todo.db;");
+			builder.UseSqlite($"Data Source={AppContext.BaseDirectory}StupidToDo.db;");
 		}
 
 		protected override void OnModelCreating(ModelBuilder builder)

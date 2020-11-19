@@ -33,29 +33,20 @@ namespace StupidToDo.Forms
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.notifyIconStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.ShowWindowBtn = new System.Windows.Forms.ToolStripMenuItem();
-			this.ExitStripBtn = new System.Windows.Forms.ToolStripMenuItem();
+			this.ShowWindowBtn = new FontAwesome.Sharp.IconMenuItem();
+			this.ExitStripBtn = new FontAwesome.Sharp.IconMenuItem();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.newItemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.NewListBox = new System.Windows.Forms.ToolStripTextBox();
-			this.listMenuCollection = new System.Windows.Forms.ToolStripMenuItem();
+			this.fileToolStripMenuItem = new FontAwesome.Sharp.IconMenuItem();
+			this.newItemMenuItem = new FontAwesome.Sharp.IconMenuItem();
+			this.DeleteList = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.ExitMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
-			this.OptionsStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ExitMenuBtn = new FontAwesome.Sharp.IconMenuItem();
+			this.OptionsStripMenu = new FontAwesome.Sharp.IconMenuItem();
 			this.ToggleMinimizeToTray = new System.Windows.Forms.ToolStripMenuItem();
-			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.ToggleCompletedTasks = new System.Windows.Forms.ToolStripMenuItem();
+			this.ToggleListReminders = new System.Windows.Forms.ToolStripMenuItem();
+			this.listMenuCollection = new FontAwesome.Sharp.IconMenuItem();
+			this.NewListBox = new System.Windows.Forms.ToolStripTextBox();
 			this.reminderTimer = new System.Windows.Forms.Timer(this.components);
 			this.FlowPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.notifyIconStrip.SuspendLayout();
@@ -76,11 +67,16 @@ namespace StupidToDo.Forms
             this.ShowWindowBtn,
             this.ExitStripBtn});
 			this.notifyIconStrip.Name = "notifyIconStrip";
+			this.notifyIconStrip.ShowCheckMargin = true;
+			this.notifyIconStrip.ShowImageMargin = false;
 			this.notifyIconStrip.Size = new System.Drawing.Size(104, 48);
 			// 
 			// ShowWindowBtn
 			// 
 			this.ShowWindowBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.ShowWindowBtn.IconChar = FontAwesome.Sharp.IconChar.WindowRestore;
+			this.ShowWindowBtn.IconColor = System.Drawing.Color.Black;
+			this.ShowWindowBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.ShowWindowBtn.Name = "ShowWindowBtn";
 			this.ShowWindowBtn.Size = new System.Drawing.Size(103, 22);
 			this.ShowWindowBtn.Text = "Show";
@@ -88,6 +84,9 @@ namespace StupidToDo.Forms
 			// ExitStripBtn
 			// 
 			this.ExitStripBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.ExitStripBtn.IconChar = FontAwesome.Sharp.IconChar.Times;
+			this.ExitStripBtn.IconColor = System.Drawing.Color.Red;
+			this.ExitStripBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.ExitStripBtn.Name = "ExitStripBtn";
 			this.ExitStripBtn.Size = new System.Drawing.Size(103, 22);
 			this.ExitStripBtn.Text = "Exit";
@@ -96,7 +95,8 @@ namespace StupidToDo.Forms
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.OptionsStripMenu});
+            this.OptionsStripMenu,
+            this.listMenuCollection});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(337, 24);
@@ -107,141 +107,94 @@ namespace StupidToDo.Forms
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newItemMenuItem,
-            this.toolStripSeparator6,
-            this.toolStripMenuItem1,
-            this.NewListBox,
-            this.listMenuCollection,
+            this.DeleteList,
             this.toolStripSeparator3,
             this.ExitMenuBtn});
+			this.fileToolStripMenuItem.IconChar = FontAwesome.Sharp.IconChar.Save;
+			this.fileToolStripMenuItem.IconColor = System.Drawing.Color.Black;
+			this.fileToolStripMenuItem.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
 			this.fileToolStripMenuItem.Text = "&File";
 			// 
 			// newItemMenuItem
 			// 
+			this.newItemMenuItem.IconChar = FontAwesome.Sharp.IconChar.Plus;
+			this.newItemMenuItem.IconColor = System.Drawing.Color.ForestGreen;
+			this.newItemMenuItem.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.newItemMenuItem.Name = "newItemMenuItem";
-			this.newItemMenuItem.Size = new System.Drawing.Size(160, 22);
+			this.newItemMenuItem.Size = new System.Drawing.Size(171, 22);
 			this.newItemMenuItem.Text = "New Item";
 			// 
-			// toolStripSeparator6
+			// DeleteList
 			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(157, 6);
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Enabled = false;
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 22);
-			this.toolStripMenuItem1.Text = "New List:";
-			// 
-			// NewListBox
-			// 
-			this.NewListBox.Name = "NewListBox";
-			this.NewListBox.Size = new System.Drawing.Size(100, 23);
-			// 
-			// listMenuCollection
-			// 
-			this.listMenuCollection.Name = "listMenuCollection";
-			this.listMenuCollection.Size = new System.Drawing.Size(160, 22);
-			this.listMenuCollection.Text = "Switch List";
+			this.DeleteList.Name = "DeleteList";
+			this.DeleteList.Size = new System.Drawing.Size(171, 22);
+			this.DeleteList.Text = "Delete Current List";
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(157, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(168, 6);
 			// 
 			// ExitMenuBtn
 			// 
+			this.ExitMenuBtn.IconChar = FontAwesome.Sharp.IconChar.Times;
+			this.ExitMenuBtn.IconColor = System.Drawing.Color.Red;
+			this.ExitMenuBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.ExitMenuBtn.Name = "ExitMenuBtn";
-			this.ExitMenuBtn.Size = new System.Drawing.Size(160, 22);
+			this.ExitMenuBtn.Size = new System.Drawing.Size(171, 22);
 			this.ExitMenuBtn.Text = "Exit";
 			// 
 			// OptionsStripMenu
 			// 
 			this.OptionsStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToggleMinimizeToTray});
+            this.ToggleMinimizeToTray,
+            this.ToggleCompletedTasks,
+            this.ToggleListReminders});
+			this.OptionsStripMenu.IconChar = FontAwesome.Sharp.IconChar.Cogs;
+			this.OptionsStripMenu.IconColor = System.Drawing.Color.Black;
+			this.OptionsStripMenu.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.OptionsStripMenu.Name = "OptionsStripMenu";
-			this.OptionsStripMenu.Size = new System.Drawing.Size(61, 20);
+			this.OptionsStripMenu.Size = new System.Drawing.Size(77, 20);
 			this.OptionsStripMenu.Text = "Options";
 			// 
 			// ToggleMinimizeToTray
 			// 
 			this.ToggleMinimizeToTray.CheckOnClick = true;
 			this.ToggleMinimizeToTray.Name = "ToggleMinimizeToTray";
-			this.ToggleMinimizeToTray.Size = new System.Drawing.Size(162, 22);
+			this.ToggleMinimizeToTray.Size = new System.Drawing.Size(227, 22);
 			this.ToggleMinimizeToTray.Text = "Minimize To Tray";
 			// 
-			// newToolStripMenuItem
+			// ToggleCompletedTasks
 			// 
-			this.newToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.Image")));
-			this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.newToolStripMenuItem.Text = "&New";
+			this.ToggleCompletedTasks.CheckOnClick = true;
+			this.ToggleCompletedTasks.Name = "ToggleCompletedTasks";
+			this.ToggleCompletedTasks.Size = new System.Drawing.Size(227, 22);
+			this.ToggleCompletedTasks.Text = "Show Completed Tasks";
 			// 
-			// openToolStripMenuItem
+			// ToggleListReminders
 			// 
-			this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
-			this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.openToolStripMenuItem.Text = "&Open";
+			this.ToggleListReminders.CheckOnClick = true;
+			this.ToggleListReminders.Name = "ToggleListReminders";
+			this.ToggleListReminders.Size = new System.Drawing.Size(227, 22);
+			this.ToggleListReminders.Text = "Only Remind For Current List";
 			// 
-			// toolStripSeparator
+			// listMenuCollection
 			// 
-			this.toolStripSeparator.Name = "toolStripSeparator";
-			this.toolStripSeparator.Size = new System.Drawing.Size(143, 6);
+			this.listMenuCollection.IconChar = FontAwesome.Sharp.IconChar.ListAlt;
+			this.listMenuCollection.IconColor = System.Drawing.Color.Black;
+			this.listMenuCollection.IconFont = FontAwesome.Sharp.IconFont.Auto;
+			this.listMenuCollection.Name = "listMenuCollection";
+			this.listMenuCollection.Size = new System.Drawing.Size(58, 20);
+			this.listMenuCollection.Text = "Lists";
 			// 
-			// saveToolStripMenuItem
+			// NewListBox
 			// 
-			this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
-			this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.saveToolStripMenuItem.Text = "&Save";
-			// 
-			// saveAsToolStripMenuItem
-			// 
-			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.saveAsToolStripMenuItem.Text = "Save &As";
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
-			// 
-			// printToolStripMenuItem
-			// 
-			this.printToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripMenuItem.Image")));
-			this.printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-			this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.printToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.printToolStripMenuItem.Text = "&Print";
-			// 
-			// printPreviewToolStripMenuItem
-			// 
-			this.printPreviewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("printPreviewToolStripMenuItem.Image")));
-			this.printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.printPreviewToolStripMenuItem.Text = "Print Pre&view";
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
-			// 
-			// exitToolStripMenuItem
-			// 
-			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-			this.exitToolStripMenuItem.Text = "E&xit";
+			this.NewListBox.MaxLength = 64;
+			this.NewListBox.Name = "NewListBox";
+			this.NewListBox.Size = new System.Drawing.Size(100, 23);
+			this.NewListBox.ToolTipText = "Type name of new list and press Enter/Return";
 			// 
 			// reminderTimer
 			// 
@@ -290,31 +243,22 @@ namespace StupidToDo.Forms
 
 		private System.Windows.Forms.NotifyIcon notifyIcon;
 		private System.Windows.Forms.MenuStrip menuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem newItemMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripMenuItem listMenuCollection;
-		private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
-		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem printPreviewToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+		private FontAwesome.Sharp.IconMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.Timer reminderTimer;
 		private System.Windows.Forms.FlowLayoutPanel FlowPanel;
 		private System.Windows.Forms.ContextMenuStrip notifyIconStrip;
-		private System.Windows.Forms.ToolStripMenuItem ShowWindowBtn;
-		private System.Windows.Forms.ToolStripMenuItem ExitStripBtn;
+		private FontAwesome.Sharp.IconMenuItem ShowWindowBtn;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.ToolStripMenuItem ExitMenuBtn;
-		private System.Windows.Forms.ToolStripMenuItem OptionsStripMenu;
+		private FontAwesome.Sharp.IconMenuItem OptionsStripMenu;
 		private System.Windows.Forms.ToolStripMenuItem ToggleMinimizeToTray;
 		private System.Windows.Forms.ToolStripTextBox NewListBox;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem ToggleCompletedTasks;
+		private System.Windows.Forms.ToolStripMenuItem DeleteList;
+		private System.Windows.Forms.ToolStripMenuItem ToggleListReminders;
+		private FontAwesome.Sharp.IconMenuItem newItemMenuItem;
+		private FontAwesome.Sharp.IconMenuItem ExitStripBtn;
+		private FontAwesome.Sharp.IconMenuItem ExitMenuBtn;
+		private FontAwesome.Sharp.IconMenuItem listMenuCollection;
 	}
 }
 

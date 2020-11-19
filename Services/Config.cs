@@ -26,6 +26,44 @@ namespace StupidToDo.Services
 			}
 		}
 
+		public static bool ShowCompleted
+		{
+			get
+			{
+				return Options.ShowCompleted;
+			}
+			set
+			{
+				Options.ShowCompleted = value;
+				SaveConfig();
+			}
+		}
+
+		public static bool MinimizeToTray
+		{
+			get
+			{
+				return Options.MinimizeToTray;
+			}
+			set
+			{
+				Options.MinimizeToTray = value;
+				SaveConfig();
+			}
+		}
+		public static bool OnlyRemindForActiveList
+		{
+			get
+			{
+				return Options.OnlyRemindForActiveList;
+			}
+			set
+			{
+				Options.OnlyRemindForActiveList = value;
+				SaveConfig();
+			}
+		}
+
 		static Config()
 		{
 			if (Options is null)
@@ -38,14 +76,14 @@ namespace StupidToDo.Services
 		{
 			lock (saveLock)
 			{
-				if (File.Exists($"{AppContext.BaseDirectory}config.json"))
+				if (File.Exists($"{AppContext.BaseDirectory}StupidToDo.config.json"))
 				{
-					Options = JsonSerializer.Deserialize<Records.AppOptions>(File.ReadAllText($"{AppContext.BaseDirectory}config.json"));
+					Options = JsonSerializer.Deserialize<Records.AppOptions>(File.ReadAllText($"{AppContext.BaseDirectory}StupidToDo.config.json"));
 				}
 				else
 				{
 					Options = new Records.AppOptions();
-					File.WriteAllText($"{AppContext.BaseDirectory}config.json", JsonSerializer.Serialize(Options, new JsonSerializerOptions { WriteIndented = true }));
+					File.WriteAllText($"{AppContext.BaseDirectory}StupidToDo.config.json", JsonSerializer.Serialize(Options, new JsonSerializerOptions { WriteIndented = true }));
 				}
 			}
 		}
@@ -54,7 +92,7 @@ namespace StupidToDo.Services
 		{
 			lock (saveLock)
 			{
-				File.WriteAllText($"{AppContext.BaseDirectory}config.json", JsonSerializer.Serialize(Options, new JsonSerializerOptions { WriteIndented = true }));
+				File.WriteAllText($"{AppContext.BaseDirectory}StupidToDo.config.json", JsonSerializer.Serialize(Options, new JsonSerializerOptions { WriteIndented = true }));
 			}
 		}
 	}
