@@ -61,11 +61,8 @@ namespace StupidToDo.Forms
 						EveryBox.Value = assignedToDo.RepeatEvery.Value;
 						RepeatsOnBox.SelectedIndex = (int)assignedToDo.Frequency;
 					}
-					else
-					{
-						remindDate.Value = assignedToDo.RemindDate.Value.Date;
-						remindTime.Value = assignedToDo.RemindTime.Value;
-					}
+					remindDate.Value = assignedToDo.RemindDate.Value.Date;
+					remindTime.Value = assignedToDo.RemindTime.Value;
 				}
 				if (assignedToDo.Completed)
 				{
@@ -161,28 +158,26 @@ namespace StupidToDo.Forms
 						assignedToDo.RepeatEvery = EveryBox.Value;
 						assignedToDo.Frequency = (Records.RepeatFrequency)RepeatsOnBox.SelectedIndex;
 					}
-					else
-					{
-						assignedToDo.RemindDate = remindDate.Value;
-						assignedToDo.RemindTime = remindTime.Value;
-					}
+					assignedToDo.RemindDate = remindDate.Value;
+					assignedToDo.RemindTime = remindTime.Value;
 				}
 				dataAccess.UpdateToDo(assignedToDo);
 				DisableEdit();
 			}
 		}
 
-		private void ToDoControl_Load(object sender, EventArgs e)
-		{
-
-		}
-
-		private void RepeatsOnBox_SelectedIndexChanged(object sender, EventArgs e)
+		private void ToggleRepeatBoxes()
 		{
 			if (RepeatsOnBox.SelectedIndex == (int)Records.RepeatFrequency.DayOfWeek)
 			{
 				DayOfWeekBox.Visible = true;
 				EveryBox.Visible = false;
+				remindTime.Visible = true;
+			}
+			else if (RepeatsOnBox.SelectedIndex == (int)Records.RepeatFrequency.Daily)
+			{
+				DayOfWeekBox.Visible = false;
+				EveryBox.Visible = true;
 				remindTime.Visible = true;
 			}
 			else
@@ -191,6 +186,11 @@ namespace StupidToDo.Forms
 				EveryBox.Visible = true;
 				remindTime.Visible = false;
 			}
+		}
+
+		private void RepeatsOnBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			ToggleRepeatBoxes();
 		}
 
 		private void DeleteBtn_Click(object sender, EventArgs e)
@@ -253,6 +253,7 @@ namespace StupidToDo.Forms
 				DayOfWeekBox.Visible = true;
 				EveryBox.Visible = true;
 				CompleteButton.Visible = false;
+				ToggleRepeatBoxes();
 			}
 			else
 			{
@@ -399,12 +400,15 @@ namespace StupidToDo.Forms
 				UnderlineBtn.BackColor = SystemColors.Control;
 
 			ColorBtn.BackColor = BodyBox.SelectionColor;
-			if(ColorBtn.BackColor.R * 0.2126 + ColorBtn.BackColor.G * 0.7152 + ColorBtn.BackColor.B * 0.0722 > 255 / 2)
+			if (ColorBtn.BackColor.R * 0.2126 + ColorBtn.BackColor.G * 0.7152 + ColorBtn.BackColor.B * 0.0722 > 255 / 2)
 			{
 				ColorBtn.IconColor = Color.Black;
-			} else
+				BodyBox.SelectionBackColor = Color.Black;
+			}
+			else
 			{
 				ColorBtn.IconColor = Color.White;
+				BodyBox.SelectionBackColor = SystemColors.Control;
 			}
 		}
 
@@ -419,7 +423,7 @@ namespace StupidToDo.Forms
 			assignedToDo.Completed = true;
 			CompleteButton.Visible = false;
 			dataAccess.UpdateToDo(assignedToDo);
-			if(!Config.ShowCompleted)
+			if (!Config.ShowCompleted)
 				(Parent.Parent as MainForm).RemoveToDo(ControlGUID, false);
 		}
 	}

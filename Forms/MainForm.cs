@@ -23,12 +23,8 @@ namespace StupidToDo.Forms
 		{
 			newItemMenuItem.Click += NewItemMenuItem_Click;
 
-			ExitStripBtn.Image = IconChar.Times.ToBitmap(Color.Red, 18);
-			ExitStripBtn.ImageAlign = ContentAlignment.MiddleCenter;
 			ExitStripBtn.Click += (object s, EventArgs e) => Close();
 
-			ShowWindowBtn.Image = IconChar.WindowRestore.ToBitmap(Color.Blue, 18);
-			ShowWindowBtn.ImageAlign = ContentAlignment.MiddleCenter;
 			ShowWindowBtn.Click += (object s, EventArgs e) => RestoreFromMinimize();
 
 			ExitMenuBtn.Click += (object s, EventArgs e) => Close();
@@ -53,11 +49,47 @@ namespace StupidToDo.Forms
 				new DeleteListForm(ref dataAccess).ShowDialog();
 				ResetChildren();
 			};
+
 			ToggleListReminders.Checked = Config.OnlyRemindForActiveList;
 			ToggleListReminders.CheckedChanged += (object s, EventArgs e) =>
 			{
 				Config.OnlyRemindForActiveList = ToggleListReminders.Checked;
 			};
+
+			ToggleLoadWithWindows.Checked = Config.LoadWithWindows;
+			ToggleLoadWithWindows.CheckedChanged += ToggleLoadWithWindows_CheckedChanged;
+
+			ToggleMinimizeOnStart.Checked = Config.MinimizeOnStart;
+			ToggleMinimizeOnStart.CheckedChanged += (object s, EventArgs e) =>
+			{
+				Config.MinimizeOnStart = ToggleMinimizeOnStart.Checked;
+			};
+		}
+
+		private void ToggleLoadWithWindows_CheckedChanged(object sender, EventArgs e)
+		{
+			if(ToggleLoadWithWindows.Checked)
+			{
+				CreateStartupShortcut();
+			} else
+			{
+				System.IO.File.Delete($"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}{System.IO.Path.DirectorySeparatorChar}StupidToDo.lnk");
+			}
+		}
+
+		private static void CreateStartupShortcut()
+		{
+			string shortcutPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}{System.IO.Path.DirectorySeparatorChar}StupidToDo.lnk";
+			if (!System.IO.File.Exists(shortcutPath))
+			{
+
+				IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+				IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutPath);
+				shortcut.Description = "Startup shortcut for StupidToDo";
+				shortcut.TargetPath = Environment.CurrentDirectory + "\\" + AppDomain.CurrentDomain.FriendlyName + ".exe";
+				shortcut.WorkingDirectory = Environment.CurrentDirectory;
+				shortcut.Save();
+			}
 		}
 
 		private async void NewListBox_KeyDown(object sender, KeyEventArgs e)
@@ -96,6 +128,10 @@ namespace StupidToDo.Forms
 				if (dueTasks.Count > 0)
 				{
 					remindersShown = true;
+
+					if (notifyIcon.Visible)
+						notifyIcon.ShowBalloonTip(2000, "Tasks due", $"You have {dueTasks.Count} due.", ToolTipIcon.Info);
+
 					foreach (var task in dueTasks)
 					{
 						var dialog = new ReminderDialog(ref dataAccess, task);
@@ -122,6 +158,7 @@ namespace StupidToDo.Forms
 			}
 			listMenuCollection.DropDownItems.Clear();
 			NewListBox.TextBox.PlaceholderText = "New list name";
+			NewListBox.TextBox.Width = listMenuCollection.DropDown.Width;
 			NewListBox.Width = listMenuCollection.DropDown.Width;
 			listMenuCollection.DropDownItems.Add(NewListBox);
 			var listCollection = await dataAccess.GetLists();
@@ -140,7 +177,8 @@ namespace StupidToDo.Forms
 				{
 					Text = list.Name,
 					IconChar = list.ID == Config.SelectedListID ? IconChar.Check : IconChar.ExchangeAlt,
-					Checked = list.ID == Config.SelectedListID
+					Checked = list.ID == Config.SelectedListID,
+					IconColor = list.ID == Config.SelectedListID ? Color.Green : Color.LightBlue
 				};
 
 				listMenuCollection.DropDownItems.Add(newItem);
@@ -157,6 +195,11 @@ namespace StupidToDo.Forms
 			listMenuCollection.DropDownItemClicked += ListMenuCollection_DropDownItemClicked;
 			ResetChildren();
 			reminderTimer.Start();
+			if(Config.MinimizeOnStart)
+			{
+				WindowState = FormWindowState.Minimized;
+				MinimizeWindow();
+			}
 		}
 
 		private void ListMenuCollection_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -194,7 +237,13 @@ namespace StupidToDo.Forms
 
 		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			if (WindowState == FormWindowState.Minimized)
+			if(WindowState == FormWindowState.Minimized)
+				MinimizeWindow();
+		}
+
+		private void MinimizeWindow()
+		{
+			if (Config.MinimizeToTray)
 			{
 				Hide();
 				notifyIcon.Visible = true;

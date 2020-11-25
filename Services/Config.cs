@@ -51,6 +51,7 @@ namespace StupidToDo.Services
 				SaveConfig();
 			}
 		}
+
 		public static bool OnlyRemindForActiveList
 		{
 			get
@@ -60,6 +61,32 @@ namespace StupidToDo.Services
 			set
 			{
 				Options.OnlyRemindForActiveList = value;
+				SaveConfig();
+			}
+		}
+
+		public static bool LoadWithWindows
+		{
+			get
+			{
+				return Options.LoadWithWindows;
+			}
+			set
+			{
+				Options.LoadWithWindows = value;
+				SaveConfig();
+			}
+		}
+
+		public static bool MinimizeOnStart
+		{
+			get
+			{
+				return Options.MinimizeOnStart;
+			}
+			set
+			{
+				Options.MinimizeOnStart = value;
 				SaveConfig();
 			}
 		}

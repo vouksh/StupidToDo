@@ -45,6 +45,8 @@ namespace StupidToDo.Forms
 			this.ToggleMinimizeToTray = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToggleCompletedTasks = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToggleListReminders = new System.Windows.Forms.ToolStripMenuItem();
+			this.ToggleLoadWithWindows = new System.Windows.Forms.ToolStripMenuItem();
+			this.ToggleMinimizeOnStart = new System.Windows.Forms.ToolStripMenuItem();
 			this.listMenuCollection = new FontAwesome.Sharp.IconMenuItem();
 			this.NewListBox = new System.Windows.Forms.ToolStripTextBox();
 			this.reminderTimer = new System.Windows.Forms.Timer(this.components);
@@ -151,7 +153,9 @@ namespace StupidToDo.Forms
 			this.OptionsStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToggleMinimizeToTray,
             this.ToggleCompletedTasks,
-            this.ToggleListReminders});
+            this.ToggleListReminders,
+            this.ToggleLoadWithWindows,
+            this.ToggleMinimizeOnStart});
 			this.OptionsStripMenu.IconChar = FontAwesome.Sharp.IconChar.Cogs;
 			this.OptionsStripMenu.IconColor = System.Drawing.Color.Black;
 			this.OptionsStripMenu.IconFont = FontAwesome.Sharp.IconFont.Auto;
@@ -179,6 +183,20 @@ namespace StupidToDo.Forms
 			this.ToggleListReminders.Name = "ToggleListReminders";
 			this.ToggleListReminders.Size = new System.Drawing.Size(227, 22);
 			this.ToggleListReminders.Text = "Only Remind For Current List";
+			// 
+			// ToggleLoadWithWindows
+			// 
+			this.ToggleLoadWithWindows.CheckOnClick = true;
+			this.ToggleLoadWithWindows.Name = "ToggleLoadWithWindows";
+			this.ToggleLoadWithWindows.Size = new System.Drawing.Size(227, 22);
+			this.ToggleLoadWithWindows.Text = "Load With Windows";
+			// 
+			// ToggleMinimizeOnStart
+			// 
+			this.ToggleMinimizeOnStart.CheckOnClick = true;
+			this.ToggleMinimizeOnStart.Name = "ToggleMinimizeOnStart";
+			this.ToggleMinimizeOnStart.Size = new System.Drawing.Size(227, 22);
+			this.ToggleMinimizeOnStart.Text = "Minimize On Start";
 			// 
 			// listMenuCollection
 			// 
@@ -259,6 +277,8 @@ namespace StupidToDo.Forms
 		private FontAwesome.Sharp.IconMenuItem ExitStripBtn;
 		private FontAwesome.Sharp.IconMenuItem ExitMenuBtn;
 		private FontAwesome.Sharp.IconMenuItem listMenuCollection;
+		private System.Windows.Forms.ToolStripMenuItem ToggleLoadWithWindows;
+		private System.Windows.Forms.ToolStripMenuItem ToggleMinimizeOnStart;
 	}
 }
 

@@ -158,7 +158,7 @@ namespace StupidToDo.Services
 					switch (item.Frequency)
 					{
 						case RepeatFrequency.Daily:
-							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value)))
+							if ((DateTime.Today - item.Created.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value)) && DateTime.Now.TimeOfDay >= item.RemindTime.Value.TimeOfDay)
 							{
 								retList.Add(item);
 							}
@@ -194,7 +194,7 @@ namespace StupidToDo.Services
 					switch (item.Frequency)
 					{
 						case RepeatFrequency.Daily:
-							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value)))
+							if ((DateTime.Today - item.LastRepeat.Value.Date) >= TimeSpan.FromDays(decimal.ToDouble(item.RepeatEvery.Value)) && DateTime.Now.TimeOfDay >= item.RemindTime.Value.TimeOfDay)
 							{
 								retList.Add(item);
 							}

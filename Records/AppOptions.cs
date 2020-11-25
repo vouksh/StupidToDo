@@ -12,5 +12,7 @@ namespace StupidToDo.Records
 		public bool ShowCompleted { get; set; } = false;
 		public bool MinimizeToTray { get; set; } = true;
 		public bool OnlyRemindForActiveList { get; set; } = false;
+		public bool LoadWithWindows { get; set; } = false;
+		public bool MinimizeOnStart { get; set; } = false;
 	}
 }

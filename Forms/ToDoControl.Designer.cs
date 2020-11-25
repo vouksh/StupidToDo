@@ -56,7 +56,7 @@ namespace StupidToDo.Forms
 			// editEnabled
 			// 
 			this.editEnabled.AutoSize = true;
-			this.editEnabled.Location = new System.Drawing.Point(3, 255);
+			this.editEnabled.Location = new System.Drawing.Point(7, 257);
 			this.editEnabled.Name = "editEnabled";
 			this.editEnabled.Size = new System.Drawing.Size(80, 19);
 			this.editEnabled.TabIndex = 0;
@@ -109,7 +109,7 @@ namespace StupidToDo.Forms
 			this.CompleteButton.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
 			this.CompleteButton.Location = new System.Drawing.Point(89, 255);
 			this.CompleteButton.Name = "CompleteButton";
-			this.CompleteButton.Size = new System.Drawing.Size(88, 23);
+			this.CompleteButton.Size = new System.Drawing.Size(89, 23);
 			this.CompleteButton.TabIndex = 7;
 			this.CompleteButton.Text = "Completed";
 			this.CompleteButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -193,7 +193,7 @@ namespace StupidToDo.Forms
 			this.deleteBtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
 			this.deleteBtn.IconSize = 20;
 			this.deleteBtn.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-			this.deleteBtn.Location = new System.Drawing.Point(258, 254);
+			this.deleteBtn.Location = new System.Drawing.Point(259, 255);
 			this.deleteBtn.Name = "deleteBtn";
 			this.deleteBtn.Size = new System.Drawing.Size(65, 23);
 			this.deleteBtn.TabIndex = 14;
