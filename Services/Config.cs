@@ -11,7 +11,7 @@ namespace StupidToDo.Services
 	public static class Config
 	{
 		private static Records.AppOptions Options;
-		private static readonly object saveLock = new object();
+		private static readonly object saveLock = new();
 
 		public static int SelectedListID
 		{

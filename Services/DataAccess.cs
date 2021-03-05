@@ -58,7 +58,7 @@ namespace StupidToDo.Services
 
 		public async Task<ToDo> AddNewToDo()
 		{
-			ToDo newToDo = new ToDo
+			ToDo newToDo = new()
 			{
 				AssignedListID = Config.SelectedListID,
 				Created = DateTime.Now
@@ -137,7 +137,7 @@ namespace StupidToDo.Services
 
 		public async Task<List<ToDo>> ItemsDueNow()
 		{
-			List<ToDo> retList = new List<ToDo>();
+			List<ToDo> retList = new();
 			List<ToDo> start;
 			if (!Config.OnlyRemindForActiveList)
 			{

@@ -82,8 +82,7 @@ namespace StupidToDo.Forms
 			string shortcutPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}{System.IO.Path.DirectorySeparatorChar}StupidToDo.lnk";
 			if (!System.IO.File.Exists(shortcutPath))
 			{
-
-				IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+				IWshRuntimeLibrary.WshShell shell = new();
 				IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutPath);
 				shortcut.Description = "Startup shortcut for StupidToDo";
 				shortcut.TargetPath = Environment.CurrentDirectory + "\\" + AppDomain.CurrentDomain.FriendlyName + ".exe";
